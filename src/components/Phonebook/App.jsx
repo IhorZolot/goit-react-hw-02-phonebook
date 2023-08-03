@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
 
 import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
@@ -14,40 +13,10 @@ const INITIAL_STATE = {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ],
   filter: '',
-  name: '',
-  number: '',
 };
 
 export default class App extends Component {
   state = INITIAL_STATE;
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({ name: '', number: '' });
-
-    const newContact = {
-      id: nanoid(),
-      name: this.state.name,
-      number: this.state.number,
-    };
-
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-  };
-
-  handleChangeInput = ({ target }) => {
-    const { name, value } = target;
-    if (value.includes('!')) {
-      alert('Invalid word');
-    }
-    if (this.checkDuplicateContact(value)) {
-      alert(`Contact with name '${value}' already exists.`);
-      return;
-    }
-
-    this.setState({ [name]: value });
-  };
 
   handleChangeSearchValue = event => {
     const { value } = event.target;
@@ -67,6 +36,12 @@ export default class App extends Component {
     );
   };
 
+  handleSubmit = newContact => {
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, newContact],
+    }));
+  };
+
   handleDeleteContact = id => {
     this.setState(prev => ({
       contacts: prev.contacts.filter(contact => contact.id !== id),
@@ -74,16 +49,14 @@ export default class App extends Component {
   };
 
   render() {
-    const { name, number, filter } = this.state;
+    const { filter } = this.state;
     const filteredContacts = this.getFilteredData();
 
     return (
       <Container>
         <h1>Phonebook</h1>
         <ContactForm
-          name={name}
-          number={number}
-          onChangeInput={this.handleChangeInput}
+          checkDuplicateContact={this.checkDuplicateContact}
           onSubmit={this.handleSubmit}
         />
         <h2>Contacts</h2>
