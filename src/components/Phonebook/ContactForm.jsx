@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { InputForm, InputName, InputNamber, Button } from './PhonebookContact.styled';
 
 export const ContactForm = ({ name, number, onChangeInput, onSubmit }) => {
@@ -35,4 +37,11 @@ export const ContactForm = ({ name, number, onChangeInput, onSubmit }) => {
       <Button type="submit">Add Contact</Button>
     </InputForm>
   );
+};
+
+ContactForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onChangeInput: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
